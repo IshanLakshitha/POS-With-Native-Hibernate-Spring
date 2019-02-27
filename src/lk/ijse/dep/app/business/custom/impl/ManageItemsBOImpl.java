@@ -6,83 +6,42 @@ import lk.ijse.dep.app.dao.custom.ItemDAO;
 import lk.ijse.dep.app.db.HibernateUtil;
 import lk.ijse.dep.app.dto.ItemDTO;
 import org.hibernate.Session;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ConcurrentModel;
 
 import java.util.List;
 
+@Component
+@Transactional
 public class ManageItemsBOImpl implements ManageItemsBO {
 
    private ItemDAO itemDAO;
 
-   public ManageItemsBOImpl(){
-       itemDAO = DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.ITEM);
+   public ManageItemsBOImpl(ItemDAO itemDAO){
+     this.itemDAO = itemDAO;
    }
 
+   @Transactional(readOnly = true)
    public List<ItemDTO> getItems() throws Exception {
-       Session mySession = HibernateUtil.getSessionFactory().openSession();
-       try(Session session = mySession) {
-           itemDAO.setSesstion(session);
-           session.beginTransaction();
-           List<ItemDTO> itemDTOS = itemDAO.findAll().map(Converter::<ItemDTO>getDTOList).get();
-           session.getTransaction().commit();
-           return itemDTOS;
-       }  catch (Exception ex) {
-           mySession.getTransaction().rollback();
-           throw ex;
-       }
+      return itemDAO.findAll().map(Converter::<ItemDTO>getDTOList).get();
    }
 
    public void createItem(ItemDTO dto) throws Exception {
-       Session mySession = HibernateUtil.getSessionFactory().openSession();
-       try(Session session = mySession){
-           itemDAO.setSesstion(session);
-           session.beginTransaction();
-           itemDAO.save(Converter.getEntity(dto));
-           session.getTransaction().commit();
-       } catch (Exception ex) {
-           mySession.getTransaction().rollback();
-           throw ex;
-       }
+     itemDAO.save(Converter.getEntity(dto));
    }
 
    public void updateItem(ItemDTO dto) throws Exception {
-       Session mySession = HibernateUtil.getSessionFactory().openSession();
-       try(Session session = mySession) {
-           itemDAO.setSesstion(session);
-           session.beginTransaction();
-           itemDAO.update(Converter.getEntity(dto));
-           session.getTransaction().commit();
-       } catch (Exception ex) {
-           mySession.getTransaction().rollback();
-           throw ex;
-       }
+     itemDAO.update(Converter.getEntity(dto));
    }
 
    public void deleteItem(String itemID) throws Exception {
-       Session mySession = HibernateUtil.getSessionFactory().openSession();
-       try(Session session = mySession){
-           itemDAO.setSesstion(session);
-           session.beginTransaction();
-           itemDAO.delete(itemID);
-           session.getTransaction().commit();
-       } catch (Exception ex) {
-           mySession.getTransaction().rollback();
-           throw ex;
-       }
+     itemDAO.delete(itemID);
    }
 
     @Override
     public ItemDTO findItem(String itemCode) throws Exception {
-        Session mySession = HibernateUtil.getSessionFactory().openSession();
-        try(Session session = mySession){
-            itemDAO.setSesstion(session);
-            session.beginTransaction();
-            ItemDTO itemDTO = itemDAO.find(itemCode).map(Converter::<ItemDTO>getDTO).orElse(null);
-            session.getTransaction().commit();
-            return itemDTO;
-        } catch (Exception ex) {
-            mySession.getTransaction().rollback();
-            throw ex;
-        }
+     return itemDAO.find(itemCode).map(Converter::<ItemDTO>getDTO).orElse(null);
     }
 
 
