@@ -3,6 +3,7 @@
 ![library system-home_page](/screenshot/home_page.png)
 
 Point of Sales system is the time and place where a retail transaction is completed.At the POS, the merchant calculates the amount owed by the customer.
+
 Technology Stack : Layered Architecture, JavaFx, Hibernate, Spring, MySQL, Jasper Reports 
 
 * By selecting customer out of the main operations show in the image, merchant can add a customer for the database to take an order from that customer.All the data will be stored in the MYSQL database.Merchant wants to give customer's name and address with an ID to register a new customer.ID should be unique for each customer.
