@@ -54,7 +54,7 @@ public class ManageCustomerFormController{
 
     @FXML
     private TableView<CustomerTM> tblCustomers;
-    private ManageCustomersBO manageCustomersBO = BOFactory.getInstance().getBO(BOFactory.BOTypes.MANAGE_CUSTOMERS);
+    private ManageCustomersBO manageCustomersBO = AppInitializer.ctx.getBean(ManageCustomersBO.class);
 
     /**
      * Initializes the controller class.

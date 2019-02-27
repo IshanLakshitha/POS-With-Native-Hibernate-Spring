@@ -54,7 +54,7 @@ public class ManageItemFormController {
     @FXML
     private TableView<ItemTM> tblItems;
 
-    private ManageItemsBO manageItemsBO = BOFactory.getInstance().getBO(BOFactory.BOTypes.MANAGE_ITEMS);
+    private ManageItemsBO manageItemsBO = AppInitializer.ctx.getBean(ManageItemsBO.class);
 
     public void initialize() throws SQLException {
 
